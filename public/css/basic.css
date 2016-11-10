@@ -1,0 +1,20 @@
+.table_container{
+    color: white;    
+	width:1650px;
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+td{
+	background-color: steelblue;
+    height: 70px;
+}
+
+.rows{
+    background-color: black;
+}
+
+h1{
+	text-align: center;    
+}
