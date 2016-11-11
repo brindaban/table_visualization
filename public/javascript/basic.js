@@ -6,27 +6,26 @@ var logScale = function (d) {
 var roundedLogScale = d3.scaleLog().rangeRound([0, 1]);
 
 var loadTable = function(data){
-	var trs = d3.select(".table_container").selectAll("tr").data(data);
+	let trs = d3.select(".table_container").selectAll("tr").data(data);
 	trs.enter().append("tr").append("th")
 		.attr("class","rows")
 		.text(function(n){ return n });
 }
 
-var bindDataToChildPositionAndAppendTd = function(childPosition,data,scale){
+var populateDataAccordingToRows = function(rowsPosition,data,scale){
 	let dataToShow = data.map(function(eachValue){ return scale(eachValue)});
-	let tds = d3.select(".table_container > tr:nth-child("+ childPosition +")").selectAll("td").data(dataToShow);
+	let tds = d3.select(".table_container > tr:nth-child("+ rowsPosition +")").selectAll("td").data(dataToShow);
 	tds.enter().append("td")
 		.text(function(d){return d});
 }
 
 var show = function(){
-	var numbers = [1,2,3,4,5,6,7,8,9,10];
-	var rows = ["Title","n","n square","log(n)","log(n) rounded"];
-	var scalesAccordingToRows = [numberScale,numberScale,powerScale,logScale,roundedLogScale];
+	let numbers = [1,2,3,4,5,6,7,8,9,10];
+	let scalesAccordingToRows = {"Title":numberScale, "n":numberScale, "n square":powerScale, "log(n)":logScale, "log(n) rounded":roundedLogScale};
+	let allRows = Object.keys(scalesAccordingToRows); 
 
-	loadTable(rows);
-	scalesAccordingToRows.forEach(function(eachScale,index){
-		bindDataToChildPositionAndAppendTd(index+1, numbers, eachScale);
-	});
+	loadTable(allRows);
+	for(let eachRow in scalesAccordingToRows)
+		populateDataAccordingToRows(allRows.indexOf(eachRow)+1, numbers, scalesAccordingToRows[eachRow])
 } 
 window.onload = show;
